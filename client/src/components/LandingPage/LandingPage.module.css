@@ -1,0 +1,52 @@
+.containenLandingPage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background-image: url('../../Images/LandingPage.png');
+    background-size: cover;
+}
+
+.title {
+    user-select: none;
+    font-size: 100px;
+    opacity: 0;
+    animation: fadeInUp 3s forwards;
+    color: white;
+    font-family: 'Brush Script MT';
+}
+
+.buttonAccess {
+    cursor: pointer;
+    font-family: 'Georgia';
+    font-size: 25px;
+    border: none;
+    text-decoration: none;
+    background-color: rgb(14, 17, 23,0.5); /* Color de fondo con transparencia */
+    color: white;
+    opacity: 0;
+    animation: fadeInUp 3s forwards;
+    padding: 10px 20px; /* Añadimos padding para que el botón sea más grande */
+    border-radius: 50px; /* Hacemos los bordes circulares */
+    transition: background-color 0.3s, color 0.3s; /* Agregamos transición para el cambio de color */
+}
+
+.buttonAccess:hover {
+    background-color: #11151C; /* Cambiamos el color de fondo en el hover */
+    color: white;
+}
+
+@keyframes fadeInUp {
+    0% {
+        transform: translateY(50%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+

@@ -1,0 +1,96 @@
+.containerNav {
+    display: flex;
+    flex-direction: column; /* Cambio la dirección a columna */
+    align-items: center;
+    border-radius: 10px;
+    width: 50%;
+    height: 140px;
+    background: linear-gradient(180deg, #596273 0%, #11151C 57.56%, black 88.98%);
+    background-size: cover;
+}
+
+.containerTitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Ancho al 100% */
+    padding-left: 20px; /* Añado padding para separar el título del borde */
+    background-size: cover;
+}
+
+.title {
+    user-select: none;
+    color: white;
+    font-family: Vegur, 'Brush Script MT';
+    font-size: 70px;
+    margin: 0; /* Elimino el margen superior e inferior */
+    margin-left: 20px;
+    margin-right: 20px;
+    text-align: center;
+    white-space: nowrap;
+    background-size: cover;
+}
+
+.image {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px; /* Añado un margen derecho */
+    background-size: cover;
+}
+
+.containerButtons {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 10px; /* Agrego margen superior */
+    background-size: cover;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-size: cover;
+}
+
+/* Los estilos de los botones que ya tenías */
+.createDog {
+    cursor: pointer;
+    font-family: 'Georgia';
+    font-size: 20px;
+    border: none;
+    text-decoration: none;
+    background-color: rgb(14, 17, 23,0.5); /* Color de fondo con transparencia */
+    color: white;
+    padding: 10px 20px; /* Añadimos padding para que el botón sea más grande */
+    border-radius: 50px; /* Hacemos los bordes circulares */
+    transition: background-color 0.3s, color 0.3s; /* Agregamos transición para el cambio de color */
+    background-size: cover;
+}
+
+.createDog:hover {
+    background-color: #11151C; /* Cambiamos el color de fondo en el hover */
+    color: white;
+    background-size: cover;
+}
+
+.exitPage {
+    cursor: pointer;
+    font-family: 'Georgia';
+    font-size: 20px;
+    border: none;
+    text-decoration: none;
+    background-color: rgb(14, 17, 23,0.5); /* Color de fondo con transparencia */
+    color: white;
+    padding: 10px 20px; /* Añadimos padding para que el botón sea más grande */
+    border-radius: 50px; /* Hacemos los bordes circulares */
+    transition: background-color 0.3s, color 0.3s; /* Agregamos transición para el cambio de color */
+    background-size: cover;
+}
+
+.exitPage:hover {
+    background-color: #11151C; /* Cambiamos el color de fondo en el hover */
+    color: white;
+    background-size: cover;
+}
