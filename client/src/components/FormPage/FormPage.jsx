@@ -1,18 +1,30 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getTemperament } from "../../redux/actions";
+import { getTemperament, createDog } from "../../redux/actions";
+import validations from "./validations";
 import styles from "./FormPage.module.css";
-import { Link } from "react-router-dom";
 
 const FormPage = () => {
+  const [dataDog, setDataDog] = useState({
+    image: "",
+    name: "",
+    weight: "",
+    height: "",
+    life_span: "",
+    temperaments: "",
+  });
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [errors, setErrors] = useState({});
+
+
   const dispatch = useDispatch();
+  const history = useHistory();
   const allTemperament = useSelector((state) => state.filteredTemperament);
 
   useEffect(() => {
     dispatch(getTemperament());
   }, [dispatch]);
-
-  const [selectedOptions, setSelectedOptions] = useState([]);
 
   const handleSelectChange = (event) => {
     const selected = Array.from(
@@ -23,6 +35,11 @@ const FormPage = () => {
       setSelectedOptions((selectedOptions) => [
         ...new Set([...selectedOptions, ...selected]),
       ]);
+
+      setDataDog((prevData) => ({
+        ...prevData,
+        temperaments: [...new Set([...prevData.temperaments, ...selected])],
+      }));
     }
   };
 
@@ -33,84 +50,121 @@ const FormPage = () => {
     setSelectedOptions(updatedValues);
   };
 
-  const handleCreate = (dog) => {
-    // Aquí puedes implementar la lógica para crear el perro en la base de datos local
-    const newDog = {
-      name: dog.name,
-      height: dog.height.metric,
-      weight: dog.weight.metric,
-      lifeSpan: dog.life_span,
-      image: dog.image.url,
-      temperament: selectedOptions.join(", "), // Unir los temperamentos seleccionados
-    };
-
-    // Aquí puedes despachar una acción para guardar el nuevo perro en la base de datos local
-    console.log("New dog:", newDog);
+  const handleChange = (event) => {
+    setDataDog((dataDog) => ({
+      ...dataDog,
+      [event.target.name]: event.target.value,
+    }));
+    setErrors(
+      validations({ ...dataDog, [event.target.name]: event.target.value })
+    );
   };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (errors.length > 0) {
+      alert("Fix create");
+    } else {
+      dispatch(createDog(dataDog));
+      alert("Create Dog");
+      setDataDog({
+        image: "",
+        name: "",
+        weight: "",
+        height: "",
+        life_span: "",
+        temperaments: "",
+      });
+      history.push("/home");
+    }
+  };
+
 
   return (
     <div className={styles.containerForm}>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className={styles.containerTitle}>
-          <h1>Create your dog!</h1>
+          <h1>Create your own dog!</h1>
         </div>
         <div className={styles.containerLeft}>
-          <label htmlFor="Name">Name</label>
-          <input name="Name" type="text" />
+          <label htmlFor="name">Name</label>
+          <input
+            name="name"
+            type="text"
+            value={dataDog.name}
+            onChange={handleChange}
+            placeholder="Insert name..."
+          />
+          {errors.name ? <p className={styles.errorMessage}>{errors.name}</p> : null}
         </div>
         <div className={styles.containerRight}>
-          <label htmlFor="Height">Height</label>
-          <input name="Height" type="text" />
+          <label htmlFor="height">Height</label>
+          <input
+            name="height"
+            type="text"
+            value={dataDog.height}
+            onChange={handleChange}
+            placeholder="Insert height..."
+          />
+          {errors.height && <p className={styles.errorMessage}>{errors.height}</p>}
         </div>
         <div className={styles.containerLeft}>
-          <label htmlFor="Weight">Weight</label>
-          <input name="Weight" type="text" />
+          <label htmlFor="weight">Weight</label>
+          <input
+            name="weight"
+            type="text"
+            value={dataDog.weight}
+            onChange={handleChange}
+            placeholder="Insert weight..."
+          />
+          {errors.weight && <p className={styles.errorMessage}>{errors.weight}</p>}
         </div>
         <div className={styles.containerRight}>
-          <label htmlFor="Life Span">Life Span</label>
-          <input name="Life Span" type="text" />
+          <label htmlFor="life_span">Life Span</label>
+          <input
+            name="life_span"
+            type="text"
+            value={dataDog.life_span}
+            onChange={handleChange}
+            placeholder="Insert life span..."
+          />
+          {errors.life_span && <p className={styles.errorMessage}>{errors.life_span}</p>}
         </div>
         <div className={styles.containerLeft}>
-          <label htmlFor="Image">Image</label>
-          <input type="text" />
+          <label htmlFor="image">Image</label>
+          <input
+            name="image"
+            type="text"
+            value={dataDog.image}
+            onChange={handleChange}
+            placeholder="Insert image url..."
+          />
+          {errors.image && <p className={styles.errorMessage}>{errors.image}</p>}
         </div>
-        <div className={styles.containerRight}>
-          <label>Temperament</label>
+        <div className={styles.containerTemperaments}>
+          <label>Temperaments</label>
           <select multiple onChange={handleSelectChange}>
             {allTemperament.map((temp) => {
               return <option value={temp.name}>{temp.name}</option>;
             })}
           </select>
+          {errors.temperament && <p className={styles.errorMessage}>{errors.temperament}</p>}
         </div>
         <div className={styles.containerOptionValue}>
           {selectedOptions.map((value, index) => (
-            <h3
-              key={index}
-              style={{ color: "white", fontFamily: "Georgia" }}
-            >
+            <h3 key={index}>
               {value}
               <span
-                style={{
-                  cursor: "pointer",
-                  marginLeft: "7px",
-                  marginRight: "6px",
-                  color: "#596273",
-                }}
+                style={{ cursor: "pointer", marginLeft: "5px", color: "#7D4E57" }}
                 onClick={() => handleRemoveOption(value)}
               >
-                x
+                X
               </span>
             </h3>
           ))}
         </div>
-        <div className={styles.containerButtons}>
-          <Link to="/home" className={styles.backButton}>
-            Close
-          </Link>
-          <button className={styles.createButton} onClick={handleCreate}>
-            Create
-          </button>
-        </div>
+        <button className={styles.createButton} type="submit">Create</button>
+        <button onClick={() => history.push("/home")} className={styles.closeButton}>Close</button>
       </form>
     </div>
   );

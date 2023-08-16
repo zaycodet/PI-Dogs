@@ -22,7 +22,7 @@ const postDog = async (req, res) => {
 
     createDog.addTemperaments(temperamentDb);
 
-    return res.status(200).json("Dog create");
+    return res.status(200).json("Dog created");
   } catch (error) {
     return res.status(500).send(error.message);
   }

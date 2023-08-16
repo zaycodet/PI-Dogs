@@ -50,6 +50,16 @@ form {
     font-family: 'Georgia';
 }
 
+.containerTemperaments {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 40%;
+    height: 100px;
+    color: white;
+    font-family: 'Georgia';
+}
+
 .containerRight label {
     width: 83%;
 }
@@ -87,7 +97,7 @@ form button {
     margin-top: 20px;
   }
   
-  .backButton,
+  .closeButton,
   .createButton {
     text-decoration: none;
     padding: 10px 0; /* Ajustar el relleno vertical */
@@ -104,6 +114,6 @@ form button {
     text-align: center; /* Centrar texto horizontalmente */
   }
   
-  .backButton, .createButton {
+  .closeButton, .createButton {
     background-color: #364156;
   }
