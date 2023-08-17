@@ -17,11 +17,13 @@
     height: 250px;
     margin-left: 20px;
     margin-right: 20px;
-    background-color: #11151C;
+    background-color: rgb(0, 0, 0, 0.5);
     background-size: cover;
+    transition: background-color 0.3s, box-shadow 0.3s, padding 0.3s;
 }
 
 .containerCard:hover {
+    background-color: rgb(17, 21, 28, 0.7);
     box-shadow: 0px 4px 6px rgb(54, 65, 86, 0.8);
     padding: 8px;
 }

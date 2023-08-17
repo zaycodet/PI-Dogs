@@ -3,9 +3,9 @@
     flex-direction: column; /* Cambio la dirección a columna */
     align-items: center;
     border-radius: 10px;
-    width: 50%;
-    height: 140px;
-    background: linear-gradient(180deg, #596273 0%, #11151C 57.56%, black 88.98%);
+    width: 100%;
+    height: 150px;
+    background: rgb(0, 0, 0, 0.8);
     background-size: cover;
 }
 

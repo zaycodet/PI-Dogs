@@ -4,8 +4,12 @@ import {
   GETDOGBYID,
   GETDOGSBYNAME,
   GETTEMPERAMENT,
-  FILTEREDTEMPERAMENT,
+  FILTERTEMPERAMENT,
   ORDER,
+  ORDERWEIGHT_ASC,
+  ORDERWEIGHT_DES,
+  FILTER_API,
+  FILTER_BD
 } from "./types";
 
 const URL = 'http://localhost:3001'
@@ -77,7 +81,7 @@ export const filterTemperaments = (selectedTemperament) => async (dispatch, getS
   
     if (selectedTemperament === "allcharacters") {
       dispatch({
-        type: FILTEREDTEMPERAMENT,
+        type: FILTERTEMPERAMENT,
         payload: allCharacters,
       });
     } else {
@@ -86,7 +90,7 @@ export const filterTemperaments = (selectedTemperament) => async (dispatch, getS
       );
       
       dispatch({
-        type: FILTEREDTEMPERAMENT,
+        type: FILTERTEMPERAMENT,
         payload: filteredByTemperament,
       });
     }
@@ -99,6 +103,13 @@ export const orderDogs = (order) => {
   return { type: ORDER, payload: order };
 };
 
+export const orderWeightAsc = (order) => {
+  return {type : ORDERWEIGHT_ASC, payload : order};
+}
+
+export const orderWeightDes = (order) => {
+  return {type : ORDERWEIGHT_DES, payload : order};
+}
 
 export const createDog = (data) => async (dispatch) => {
   try {
@@ -108,3 +119,18 @@ export const createDog = (data) => async (dispatch) => {
     return console.log(error.message);
   }
 }
+
+export const filterApi = () => {
+  return {
+      type: FILTER_API,
+      payload: null
+  }
+}
+
+export const filterBD = () => {
+  return {
+      type: FILTER_BD,
+      payload: null
+  }
+}
+

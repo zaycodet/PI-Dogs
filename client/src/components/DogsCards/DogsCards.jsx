@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getDogs, orderDogs } from "../../redux/actions/index";
+import { getDogs, orderDogs, orderWeightAsc, orderWeightDes, filterApi, filterBD } from "../../redux/actions/index";
 import styles from "./DogsCards.module.css";
 import DogCard from "../DogCard/DogCard";
 import FilterTemperament from "../FilterTemperament/FilterTemperament";
@@ -54,7 +54,29 @@ const DogsCards = () => {
   };
 
   const handleOrder = (e) => {
-    dispatch(orderDogs(e.target.value));
+    const orderType = e.target.value;
+
+    if (orderType === "A") {
+      dispatch(orderDogs("A")); // Orden alfabético ascendente
+    } else if (orderType === "D") {
+      dispatch(orderDogs("D")); // Orden alfabético descendente
+    } else if (orderType === "WA") {
+      dispatch(orderWeightAsc()); // Orden por peso ascendente
+    } else if (orderType === "WD") {
+      dispatch(orderWeightDes()); // Orden por peso descendente
+    }
+  };
+
+  const handleOrigin = (value, dispatch, setCurrentPage) => {
+    if (value === "API") {
+      dispatch(filterApi());
+    }
+    if (value === "BD") {
+      dispatch(filterBD());
+    }
+    if (value === "All") {
+      dispatch(getDogs());
+    }
   };
 
   return (
@@ -68,16 +90,21 @@ const DogsCards = () => {
           placeholder="Search dog by name..."
         />
         <FilterTemperament />
-        <select>
-          <option>Filter by origin</option>
-          <option value="API">API Dogs</option>
-          <option value="Database">DataBase Dogs</option>
-        </select>
         <select onChange={handleOrder}>
           <option>Filter by order</option>
-          <option value="A">Upward</option>
-          <option value="D">Falling</option>
-        </select>        
+          <option value="A">Name (Asc)</option>
+          <option value="D">Name (Desc)</option>
+          <option value="WA">Weight (Asc)</option>
+          <option value="WD">Weight (Desc)</option>
+        </select>
+        <select onChange={handleOrigin}>
+            <option value="default" hidden>
+              Data source
+            </option>
+            <option value="All">All Dogs</option>
+            <option value="API">API Dogs</option>
+            <option value="BD">DB Dogs</option>
+          </select>
       </div>
       <div className={styles.cards}>
         {current?.map((data) => {

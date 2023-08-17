@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import axios from 'axios';
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getTemperament, createDog } from "../../redux/actions";
+import { getTemperament } from "../../redux/actions";
 import validations from "./validations";
 import styles from "./FormPage.module.css";
 
@@ -12,7 +13,7 @@ const FormPage = () => {
     weight: "",
     height: "",
     life_span: "",
-    temperaments: "",
+    temperaments: [],
   });
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [errors, setErrors] = useState({});
@@ -60,25 +61,47 @@ const FormPage = () => {
     );
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event, dataDog) => {
     event.preventDefault();
-    if (errors.length > 0) {
-      alert("Fix create");
-    } else {
-      dispatch(createDog(dataDog));
-      alert("Create Dog");
+    console.log("Submitting form data:", dataDog); // Verifica los datos que se están enviando
+  
+    try {
+      const newDog = {
+        name: `${dataDog.name}`,
+        image: `${dataDog.image.url}`,
+        height: `${dataDog.height.metric}`,
+        weight: `${dataDog.weight.metric}`,
+        life_span: `${dataDog.life_span}`,
+        temperaments: dataDog.temperaments,
+      };
+      console.log("Sending request with data:", newDog); // Verifica los datos que se enviarán al servidor
+      const response = await axios.post(`http://localhost:3001/dogs`, newDog);
+      const responseData = response.data;
+  
+      console.log("Response data:", responseData); // Verifica la respuesta del servidor
+  
       setDataDog({
-        image: "",
         name: "",
-        weight: "",
+        image: "",
         height: "",
+        weight: "",
         life_span: "",
-        temperaments: "",
+        temperaments: [],
       });
-      history.push("/home");
+  
+      alert("Dog created successfully!");
+  
+      const result = window.confirm("Do you want to add a new puppy?");
+      if (result) {
+        window.location.href = "http://localhost:3000/form";
+      } else {
+        window.location.href = "http://localhost:3000/home";
+      }
+    } catch (error) {
+      console.error("Error:", error); // Muestra el error en la consola
+      alert("Unexpected error, please try again later");
     }
   };
-
 
   return (
     <div className={styles.containerForm}>
@@ -163,11 +186,11 @@ const FormPage = () => {
             </h3>
           ))}
         </div>
-        <button className={styles.createButton} type="submit">Create</button>
+        <button className={styles.createButton} onClick={(event) => handleSubmit(event, dataDog)}>Create</button>
         <button onClick={() => history.push("/home")} className={styles.closeButton}>Close</button>
       </form>
     </div>
-  );
+  );  
 };
 
 export default FormPage;
