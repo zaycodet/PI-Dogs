@@ -57,17 +57,17 @@ const DogsCards = () => {
     const orderType = e.target.value;
 
     if (orderType === "A") {
-      dispatch(orderDogs("A")); // Orden alfabético ascendente
+      dispatch(orderDogs("A")); 
     } else if (orderType === "D") {
-      dispatch(orderDogs("D")); // Orden alfabético descendente
+      dispatch(orderDogs("D")); 
     } else if (orderType === "WA") {
-      dispatch(orderWeightAsc()); // Orden por peso ascendente
+      dispatch(orderWeightAsc()); 
     } else if (orderType === "WD") {
-      dispatch(orderWeightDes()); // Orden por peso descendente
+      dispatch(orderWeightDes()); 
     }
   };
 
-  const handleOrigin = (value, dispatch, setCurrentPage) => {
+  const handleOrigin = (value, dispatch) => {
     if (value === "API") {
       dispatch(filterApi());
     }

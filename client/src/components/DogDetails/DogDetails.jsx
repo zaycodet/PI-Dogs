@@ -14,6 +14,8 @@ const DogDetails = () => {
     dispatch(getDogById(id));
   }, [dispatch, id]);
 
+  console.log("Character Dog:", characterDog[0]);
+
   const handleClose = () => {
     history.goBack(); // Función para volver atrás en el historial
   };
@@ -27,12 +29,10 @@ const DogDetails = () => {
           <h2>Life Span: {characterDog[0].life_span}</h2>
           <h2>Temperament: {characterDog[0].temperament}</h2>
           <h2>
-            Weight: {characterDog[0]?.weight.imperial} lbs /{" "}
-            {characterDog[0]?.weight.metric} kg
+            Weight: {characterDog[0]?.weight.metric} kg
           </h2>
           <h2>
-            Height: {characterDog[0]?.height.imperial} in /{" "}
-            {characterDog[0]?.height.metric} cm
+            Height: {characterDog[0]?.height.metric} cm
           </h2>
           <button className={styles.goBackButton} onClick={handleClose}>
             Close

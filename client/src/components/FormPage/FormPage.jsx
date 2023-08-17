@@ -3,17 +3,23 @@ import axios from 'axios';
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getTemperament } from "../../redux/actions";
-import validations from "./validations";
+import { validations} from './validations';
 import styles from "./FormPage.module.css";
 
 const FormPage = () => {
   const [dataDog, setDataDog] = useState({
-    image: "",
+    image: {
+      url: "",
+    },
     name: "",
-    weight: "",
-    height: "",
+    weight: {
+      metric: "",
+    },
+    height: {
+      metric: "",
+    },
     life_span: "",
-    temperaments: [],
+    temperament: [],
   });
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [errors, setErrors] = useState({});
@@ -39,7 +45,7 @@ const FormPage = () => {
 
       setDataDog((prevData) => ({
         ...prevData,
-        temperaments: [...new Set([...prevData.temperaments, ...selected])],
+        temperament: [...new Set([...prevData.temperament, ...selected])],
       }));
     }
   };
@@ -52,14 +58,20 @@ const FormPage = () => {
   };
 
   const handleChange = (event) => {
-    setDataDog((dataDog) => ({
-      ...dataDog,
-      [event.target.name]: event.target.value,
+    const { name, value } = event.target;
+  
+    // Realiza las validaciones utilizando la función performValidations
+    const newErrors = validations(name, value);
+  
+    setErrors(newErrors);
+  
+    setDataDog((prevData) => ({
+      ...prevData,
+      [name]: value,
     }));
-    setErrors(
-      validations({ ...dataDog, [event.target.name]: event.target.value })
-    );
   };
+
+  console.log("Data Dog Before Submit:", dataDog);
 
   const handleSubmit = async (event, dataDog) => {
     event.preventDefault();
@@ -67,12 +79,12 @@ const FormPage = () => {
   
     try {
       const newDog = {
-        name: `${dataDog.name}`,
-        image: `${dataDog.image.url}`,
-        height: `${dataDog.height.metric}`,
-        weight: `${dataDog.weight.metric}`,
-        life_span: `${dataDog.life_span}`,
-        temperaments: dataDog.temperaments,
+        name: dataDog.name,
+        image: dataDog.image.url,
+        height: dataDog.height.metric,
+        weight: dataDog.weight.metric,
+        life_span: dataDog.life_span,
+        temperaments: dataDog.temperament,
       };
       console.log("Sending request with data:", newDog); // Verifica los datos que se enviarán al servidor
       const response = await axios.post(`http://localhost:3001/dogs`, newDog);
@@ -86,16 +98,16 @@ const FormPage = () => {
         height: "",
         weight: "",
         life_span: "",
-        temperaments: [],
+        temperament: [],
       });
   
       alert("Dog created successfully!");
   
-      const result = window.confirm("Do you want to add a new puppy?");
+      const result = window.confirm("Do you want to create a new dog?");
       if (result) {
-        window.location.href = "http://localhost:3000/form";
+        history.push("/form");
       } else {
-        window.location.href = "http://localhost:3000/home";
+        history.push("/home");
       }
     } catch (error) {
       console.error("Error:", error); // Muestra el error en la consola
@@ -125,7 +137,7 @@ const FormPage = () => {
           <input
             name="height"
             type="text"
-            value={dataDog.height}
+            value={dataDog.height.metric}
             onChange={handleChange}
             placeholder="Insert height..."
           />
@@ -136,7 +148,7 @@ const FormPage = () => {
           <input
             name="weight"
             type="text"
-            value={dataDog.weight}
+            value={dataDog.weight.metric}
             onChange={handleChange}
             placeholder="Insert weight..."
           />
@@ -157,10 +169,10 @@ const FormPage = () => {
           <label htmlFor="image">Image</label>
           <input
             name="image"
-            type="text"
-            value={dataDog.image}
+            type="url"
+            value={dataDog.image.url}
             onChange={handleChange}
-            placeholder="Insert image url..."
+            placeholder="Insert a valid url..."
           />
           {errors.image && <p className={styles.errorMessage}>{errors.image}</p>}
         </div>

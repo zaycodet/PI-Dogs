@@ -94,20 +94,22 @@ const rootReducer = (state = initialState, action) => {
         const allDogs1 = [...state.allDogs];
         return {
           ...state,
-          showDogs: allDogs1.filter((dog) => typeof dog.id === "number"), //id de la api es num entero
+          showDogs: allDogs1.filter((dog) => 
+            typeof dog.id === "number" && !dog.id.match(/[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}/)
+          ), // Filtra por ID numérico y excluye UUID
         };
       } else {
         return state;
       }
+
     case FILTER_BD:
       if (Array.isArray(state.allDogs)) {
         const allDogs2 = [...state.allDogs];
         return {
+          ...state,
           showDogs: allDogs2.filter((dog) =>
-            /[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}/.test(
-              dog.id
-            )
-          ),
+            dog.id.match(/[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}/)
+          ), // Filtra por UUID y excluye IDs numéricos
         };
       } else {
         return state;
